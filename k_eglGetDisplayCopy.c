@@ -116,7 +116,7 @@ EGLBoolean eglSwapBuffers(EGLDisplay edisplay, EGLSurface egsurface) {
 		image = XGetImage(display, window, 0, 0, width, height, AllPlanes, ZPixmap);
 		status = 1;
 	 }
-	 XImage *img = XCreateImage(display,CopyFromParent,24,ZPixmap,0,buffer,width, height, 32, 0);
+	 XImage *img = XCreateImage(display,CopyFromParent,depth,ZPixmap,0,buffer,width, height, 32, 0);
 	 XPutImage(display, window, gc, img, 0, 0, 0, 0, width, height);
 	 free(buffer);
 	 return EGL_TRUE;
