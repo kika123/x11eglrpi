@@ -5,6 +5,7 @@ sudo mv k_eglGetDisplayCopy.o /opt/vc/lib/libegl-unpack
 cd /opt/vc/lib/libegl-unpack
 sudo ar x ../libEGL_static.a
 sudo objcopy --redefine-sym eglGetDisplay=real_eglGetDisplay --redefine-sym eglCreateWindowSurface=real_eglCreateWindowSurface --redefine-sym eglSwapBuffers=real_eglSwapBuffers --redefine-sym eglMakeCurrent=real_eglMakeCurrent egl_client.c.o egl_client-modified.c.o
+rm -rf egl_client.c.o  
 cd ..
 sudo gcc -shared -o libEGL.so -L/opt/vc/lib libegl-unpack/*.o -g -lbcm_host libkhrn_static.a
 echo "Installation END"
