@@ -27,6 +27,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
+int x11_enabled;
 Window* root;
 Window* window;
 EGLDisplay *edisplay;
@@ -35,6 +36,10 @@ Display* display;
 EGLSurface egl_surface;
 XWindowAttributes *window_attributes_return;
 EGLDisplay eglGetDisplay(NativeDisplayType native_display) {
+	if ( native_display == EGL_DEFAULT_DISPLAY) {
+		x11_enabled=0;
+		return real_eglGetDisplay(native_display);
+	}
 	puts("Getting an X11 EGL Display.");
 	bcm_host_init();
 	display = (Display*)native_display;
@@ -43,6 +48,9 @@ EGLDisplay eglGetDisplay(NativeDisplayType native_display) {
 	return edisplay;
 }
 EGLSurface eglCreateWindowSurface(EGLDisplay egldisplay, EGLConfig config, NativeWindowType native_window, EGLint const * attrib_list) {
+	if (x11_enabled == 0) {
+		return real_eglCreateWindowSurface(egldisplay,config,native_window,attrib_list);
+	}
 	window = (Window*) native_window;
 	puts("Getting window information...");
 	XWindowAttributes window_attributes;
@@ -104,6 +112,9 @@ EGLSurface eglCreateWindowSurface(EGLDisplay egldisplay, EGLConfig config, Nativ
 	return egl_surface;
 }
 EGLBoolean eglSwapBuffers(EGLDisplay edisplay, EGLSurface egsurface) {
+	 if (x11_enabled == 0) {
+		return real_eglSwapBuffers(edisplay,egsurface);
+	 }
 	 unsigned int *buffer = (unsigned int *)malloc(height * width * 4);
          glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 	 static GC gc;
