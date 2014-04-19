@@ -40,6 +40,7 @@ EGLDisplay eglGetDisplay(NativeDisplayType native_display) {
 		x11_enabled=0;
 		return real_eglGetDisplay(native_display);
 	}
+	x11_enabled=1
 	puts("Getting an X11 EGL Display.");
 	bcm_host_init();
 	display = (Display*)native_display;
