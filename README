@@ -1,3 +1,5 @@
 X11 EGL on the Raspberry Pi
 
 This is a small library which permits X11 EGL.
+YOU NEED TO SET DISPLAY DEPTH TO 32 BIT.
+ADD framebuffer_depth=32 > config.txt
