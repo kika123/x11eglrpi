@@ -28,11 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-#ifdef X11EGLRPI_EXPERIMENTAL_DLSYM
-static int (*real_eglGetDisplay)(NativeDisplayType) = NULL;
-static EGLSurface (*real_eglCreateWindowSurface)(EGLDisplay egldisplay, EGLConfig config, NativeWindowType native_window, EGLint const * attrib_list) = NULL;
-static EGLBoolean (*real_eglSwapBuffers)(EGLDisplay edisplay, EGLSurface egsurface) = NULL;
-#endif
+
 static int x11_enabled = 0;
 Window* root;
 Window* window;
@@ -42,11 +38,6 @@ Display* display;
 EGLSurface egl_surface;
 XWindowAttributes *window_attributes_return;
 EGLDisplay eglGetDisplay(NativeDisplayType native_display) {
-#ifdef X11EGLRPI_EXPERIMENTAL_DLSYM
-	real_eglGetDisplay = dlsym(RTLD_NEXT, "eglGetDisplay");
-	real_eglCreateWindowSurface = dlsym(RTLD_NEXT,"eglCreateWindowSurface");
-	real_eglSwapBuffers= dlsym(RTLD_NEXT,"eglSwapBuffers");
-#endif
 	if ( native_display == EGL_DEFAULT_DISPLAY) {
 		x11_enabled=0;
 		return real_eglGetDisplay(native_display);
